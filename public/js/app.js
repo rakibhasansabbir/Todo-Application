@@ -47370,117 +47370,146 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            managers: [],
-            manager: {
-                name: "",
-                email: "",
-                password: "",
-                position: ""
-            },
-            manager_id: "",
-            pagination: {},
-            edit: false
-        };
+  data: function data() {
+    return {
+      managers: [],
+      manager: {
+        id: "",
+        name: "",
+        email: "",
+        password: "",
+        position: ""
+      },
+      manager_id: "",
+      pagination: {},
+      edit: false
+    };
+  },
+  created: function created() {
+    this.fetchManager();
+  },
+
+  methods: {
+    fetchManager: function fetchManager(page_url) {
+      var _this = this;
+
+      var vm = this;
+      page_url = page_url || "api/managers";
+      fetch(page_url).then(function (res) {
+        return res.json();
+      }).then(function (res) {
+        _this.managers = res.data;
+        vm.makePagination(res.meta, res.links);
+      }).catch(function (err) {
+        return console.log(err);
+      });
     },
-    created: function created() {
-        this.fetchManager();
+    makePagination: function makePagination(meta, links) {
+      var pagination = {
+        current_page: meta.current_page,
+        last_page: meta.last_page,
+        next_page_url: links.next,
+        prev_page_url: links.prev
+      };
+      this.pagination = pagination;
     },
+    deleteManager: function deleteManager(id) {
+      var _this2 = this;
 
-    methods: {
-        fetchManager: function fetchManager(page_url) {
-            var _this = this;
+      if (confirm("Are you sure?")) {
+        fetch("api/manager/" + id, {
+          method: "delete"
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          alert("manager Removed");
+          _this2.fetchManager();
+        }).catch(function (err) {
+          return console.log(err);
+        });
+      }
+    },
+    addManager: function addManager() {
+      var _this3 = this;
 
-            var vm = this;
-            page_url = page_url || "api/managers";
-            fetch(page_url).then(function (res) {
-                return res.json();
-            }).then(function (res) {
-                _this.managers = res.data;
-                vm.makePagination(res.meta, res.links);
-            }).catch(function (err) {
-                return console.log(err);
-            });
-        },
-        makePagination: function makePagination(meta, links) {
-            var pagination = {
-                current_page: meta.current_page,
-                last_page: meta.last_page,
-                next_page_url: links.next,
-                prev_page_url: links.prev
-            };
-            this.pagination = pagination;
-        },
-        deleteManager: function deleteManager(id) {
-            var _this2 = this;
-
-            if (confirm('Are you sure?')) {
-                fetch("api/manager/" + id, {
-                    method: 'delete'
-                }).then(function (res) {
-                    return res.json();
-                }).then(function (data) {
-                    alert('manager Removed');
-                    _this2.fetchManagers();
-                }).catch(function (err) {
-                    return console.log(err);
-                });
-            }
-        },
-        addManager: function addManager() {
-            var _this3 = this;
-
-            if (this.edit === false) {
-                fetch("api/managers", {
-                    method: 'post',
-                    body: JSON.stringify(this.manager),
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                }).then(function (res) {
-                    return res.json();
-                }).then(function (data) {
-                    _this3.manager.name = '';
-                    _this3.manager.email = '';
-                    alert('manager Added');
-                    _this3.fetchManagers();
-                }).catch(function (err) {
-                    return console.log(err);
-                });
-            } else {
-                fetch("api/manager", {
-                    method: 'put',
-                    body: JSON.stringify(this.manager),
-                    headers: {
-                        'content-type': 'application/json'
-                    }
-                }).then(function (res) {
-                    return res.json();
-                }).then(function (data) {
-                    _this3.manager.name = '';
-                    _this3.manager.email = '';
-                    _this3.manager.password = '';
-                    _this3.manager.position = '';
-                    alert('manager Added');
-                    _this3.fetchManagers();
-                }).catch(function (err) {
-                    return console.log(err);
-                });
-            }
-        },
-        editManagers: function editManagers(manager) {
-            this.edit = true;
-            this.manager.id = manager.id;
-            this.manager.manager_id = manager.id;
-            this.manager.name = manager.name;
-            this.manager.email = manager.email;
-            this.manager.password = manager.password;
-            this.manager.position = manager.position;
-        }
+      if (this.edit === false) {
+        fetch("api/manager", {
+          method: "post",
+          body: JSON.stringify(this.manager),
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.manager.name = "";
+          _this3.manager.email = "";
+          _this3.manager.password = "";
+          _this3.manager.position = "";
+          alert("manager Added");
+          _this3.fetchManager();
+        }).catch(function (err) {
+          return console.log(err);
+        });
+      } else {
+        fetch("api/manager", {
+          method: "put",
+          body: JSON.stringify(this.manager),
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(function (res) {
+          return res.json();
+        }).then(function (data) {
+          _this3.manager.name = "";
+          _this3.manager.email = "";
+          _this3.manager.password = "";
+          _this3.manager.position = "";
+          alert("manager Added");
+          _this3.fetchManager();
+        }).catch(function (err) {
+          return console.log(err);
+        });
+      }
+    },
+    editManager: function editManager(manager) {
+      this.edit = true;
+      this.manager.id = manager.id;
+      this.manager.manager_id = manager.id;
+      this.manager.name = manager.name;
+      this.manager.email = manager.email;
+      this.manager.password = manager.password;
+      this.manager.position = manager.position;
     }
+  }
 });
 
 /***/ }),
@@ -47674,10 +47703,89 @@ var render = function() {
           ]
         )
       ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "card card-body mb-2" }, [
+      _c(
+        "table",
+        { staticClass: "table" },
+        [
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._l(_vm.managers, function(manager) {
+            return _c("tbody", { key: manager.id }, [
+              _c("tr", [
+                _c("td", [_vm._v(_vm._s(manager.name))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(manager.email))]),
+                _vm._v(" "),
+                _c("td", [_vm._v(_vm._s(manager.position))]),
+                _vm._v(" "),
+                _c("td", [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "btn-group",
+                      attrs: { role: "group", "aria-label": "Basic example" }
+                    },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-warning",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.editManager(manager)
+                            }
+                          }
+                        },
+                        [_vm._v("Edit")]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-danger",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.deleteManager(manager.id)
+                            }
+                          }
+                        },
+                        [_vm._v("Delete")]
+                      )
+                    ]
+                  )
+                ])
+              ])
+            ])
+          })
+        ],
+        2
+      )
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Position")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Action")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {

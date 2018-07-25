@@ -36,6 +36,32 @@
       
             </ul>
         </nav>
+
+        <div class="card card-body mb-2">
+           <table class="table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Position</th>
+                <th>Action</th>
+             </tr>
+            </thead>
+            <tbody v-for="manager in managers" :key="manager.id">
+                <tr>
+                    <td>{{manager.name}}</td>
+                    <td>{{manager.email}}</td>
+                    <td>{{manager.position}}</td>
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            <button type="button" class="btn btn-warning" @click="editManager(manager)">Edit</button>
+                            <button type="button" class="btn btn-danger" @click="deleteManager(manager.id)">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            </table>
+        </div>
         
     </div>
 </template>
@@ -46,6 +72,7 @@ export default {
     return {
       managers: [],
       manager: {
+        id: "",
         name: "",
         email: "",
         password: "",
@@ -61,7 +88,7 @@ export default {
   },
   methods: {
     fetchManager(page_url) {
-    let vm = this;
+      let vm = this;
       page_url = page_url || "api/managers";
       fetch(page_url)
         .then(res => res.json())
@@ -80,66 +107,66 @@ export default {
       };
       this.pagination = pagination;
     },
-    deleteManager(id){
-        if(confirm('Are you sure?')){
-            fetch(`api/manager/${id}`,{
-                method: 'delete'
-            })
-            .then(res => res.json())
-            .then(data => {
-                alert('manager Removed')
-                this.fetchManagers();
-            })
-            .catch(err => console.log(err));
-        }
+    deleteManager(id) {
+      if (confirm("Are you sure?")) {
+        fetch(`api/manager/${id}`, {
+          method: "delete"
+        })
+          .then(res => res.json())
+          .then(data => {
+            alert("manager Removed");
+            this.fetchManager();
+          })
+          .catch(err => console.log(err));
+      }
     },
-    addManager(){
-        if (this.edit === false) {
-            fetch(`api/managers`,{
-                method: 'post',
-                body: JSON.stringify(this.manager),
-                headers: {
-                    'content-type': 'application/json' 
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                this.manager.name = '';
-                this.manager.email = '';
-                alert('manager Added');
-                this.fetchManagers();
-            })
-            .catch(err => console.log(err))
-        }else{
-            fetch(`api/manager`,{
-                method: 'put',
-                body: JSON.stringify(this.manager),
-                headers: {
-                    'content-type': 'application/json' 
-                }
-            })
-            .then(res => res.json())
-            .then(data => {
-                this.manager.name = '';
-                this.manager.email = '';
-                this.manager.password = '';
-                this.manager.position = '';
-                alert('manager Added');
-                this.fetchManagers();
-            })
-            .catch(err => console.log(err))
-
-        }
+    addManager() {
+      if (this.edit === false) {
+        fetch(`api/manager`, {
+          method: "post",
+          body: JSON.stringify(this.manager),
+          headers: {
+            "content-type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            this.manager.name = "";
+            this.manager.email = "";
+            this.manager.password = "";
+            this.manager.position = "";
+            alert("manager Added");
+            this.fetchManager();
+          })
+          .catch(err => console.log(err));
+      } else {
+        fetch(`api/manager`, {
+          method: "put",
+          body: JSON.stringify(this.manager),
+          headers: {
+            "content-type": "application/json"
+          }
+        })
+          .then(res => res.json())
+          .then(data => {
+            this.manager.name = "";
+            this.manager.email = "";
+            this.manager.password = "";
+            this.manager.position = "";
+            alert("manager Added");
+            this.fetchManager();
+          })
+          .catch(err => console.log(err));
+      }
     },
-    editManagers(manager){
-        this.edit = true;
-        this.manager.id = manager.id;
-        this.manager.manager_id = manager.id;
-        this.manager.name = manager.name;
-        this.manager.email = manager.email;
-        this.manager.password = manager.password;
-        this.manager.position = manager.position;
-
+    editManager(manager) {
+      this.edit = true;
+      this.manager.id = manager.id;
+      this.manager.manager_id = manager.id;
+      this.manager.name = manager.name;
+      this.manager.email = manager.email;
+      this.manager.password = manager.password;
+      this.manager.position = manager.position;
     }
   }
 };

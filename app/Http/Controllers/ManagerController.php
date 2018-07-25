@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Manager;
-use App\Http\Resources\Manager as ArticleResource;
+use App\Http\Resources\Manager as ManagerResource;
 
 class ManagerController extends Controller
 {
@@ -19,7 +19,7 @@ class ManagerController extends Controller
         $manager = Manager::orderBy('created_at', 'desc')->paginate(5);
 
         // Return collection of manager as a resource
-        return ArticleResource::collection($manager);
+        return ManagerResource::collection($manager);
     }
 
     /**
@@ -44,7 +44,7 @@ class ManagerController extends Controller
 
         $manager->name = $request->input('name');
         $manager->email = $request->input('email');
-        $manager->password = $request->input('password');
+        $manager->password = bcrypt($request->input('password'));
         $manager->position = $request->input('position');
 
         if($manager->save()) {

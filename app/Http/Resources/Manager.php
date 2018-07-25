@@ -17,6 +17,7 @@ class Manager extends Resource
         // return parent::toArray($request);
 
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
             'password' => $this->password,

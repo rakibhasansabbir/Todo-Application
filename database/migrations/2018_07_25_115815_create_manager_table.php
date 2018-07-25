@@ -13,7 +13,7 @@ class CreateManagerTable extends Migration
      */
     public function up()
     {
-        Schema::create('manager', function (Blueprint $table) {
+        Schema::create('managers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();

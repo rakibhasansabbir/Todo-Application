@@ -19,7 +19,7 @@ class CreateTodoTable extends Migration
             $table->string('body');
 
             $table->integer('manager_id')->unsigned();
-            $table->foreign('manager_id')->references('id')->on('manager')->onDelete('cascade');
+            $table->foreign('manager_id')->references('id')->on('managers')->onDelete('cascade');
             $table->timestamps();
         });
     }
