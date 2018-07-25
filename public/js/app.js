@@ -13867,7 +13867,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(43);
 
 
 /***/ }),
@@ -47173,9 +47173,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 var disposed = false
 var normalizeComponent = __webpack_require__(40)
 /* script */
-var __vue_script__ = null
+var __vue_script__ = __webpack_require__(41)
 /* template */
-var __vue_template__ = __webpack_require__(41)
+var __vue_template__ = __webpack_require__(42)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -47324,79 +47324,358 @@ module.exports = function normalizeComponent (
 
 /***/ }),
 /* 41 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            managers: [],
+            manager: {
+                name: "",
+                email: "",
+                password: "",
+                position: ""
+            },
+            manager_id: "",
+            pagination: {},
+            edit: false
+        };
+    },
+    created: function created() {
+        this.fetchManager();
+    },
+
+    methods: {
+        fetchManager: function fetchManager(page_url) {
+            var _this = this;
+
+            var vm = this;
+            page_url = page_url || "api/managers";
+            fetch(page_url).then(function (res) {
+                return res.json();
+            }).then(function (res) {
+                _this.managers = res.data;
+                vm.makePagination(res.meta, res.links);
+            }).catch(function (err) {
+                return console.log(err);
+            });
+        },
+        makePagination: function makePagination(meta, links) {
+            var pagination = {
+                current_page: meta.current_page,
+                last_page: meta.last_page,
+                next_page_url: links.next,
+                prev_page_url: links.prev
+            };
+            this.pagination = pagination;
+        },
+        deleteManager: function deleteManager(id) {
+            var _this2 = this;
+
+            if (confirm('Are you sure?')) {
+                fetch("api/manager/" + id, {
+                    method: 'delete'
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    alert('manager Removed');
+                    _this2.fetchManagers();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            }
+        },
+        addManager: function addManager() {
+            var _this3 = this;
+
+            if (this.edit === false) {
+                fetch("api/managers", {
+                    method: 'post',
+                    body: JSON.stringify(this.manager),
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    _this3.manager.name = '';
+                    _this3.manager.email = '';
+                    alert('manager Added');
+                    _this3.fetchManagers();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            } else {
+                fetch("api/manager", {
+                    method: 'put',
+                    body: JSON.stringify(this.manager),
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    _this3.manager.name = '';
+                    _this3.manager.email = '';
+                    _this3.manager.password = '';
+                    _this3.manager.position = '';
+                    alert('manager Added');
+                    _this3.fetchManagers();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            }
+        },
+        editManagers: function editManagers(manager) {
+            this.edit = true;
+            this.manager.id = manager.id;
+            this.manager.manager_id = manager.id;
+            this.manager.name = manager.name;
+            this.manager.email = manager.email;
+            this.manager.password = manager.password;
+            this.manager.position = manager.position;
+        }
+    }
+});
+
+/***/ }),
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "form",
-    {
-      staticClass: "mb-3",
-      on: {
-        submit: function($event) {
-          $event.preventDefault()
-          return _vm.addArticle($event)
+  return _c("div", [
+    _c("h2", [_vm._v("Add manager")]),
+    _vm._v(" "),
+    _c(
+      "form",
+      {
+        staticClass: "mb-3",
+        on: {
+          submit: function($event) {
+            $event.preventDefault()
+            return _vm.addManager($event)
+          }
         }
-      }
-    },
-    [
-      _c("div", { staticClass: "form-group" }, [
-        _c("input", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.article.title,
-              expression: "article.title"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { type: "text", placeholder: "Title" },
-          domProps: { value: _vm.article.title },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+      },
+      [
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.manager.name,
+                expression: "manager.name"
               }
-              _vm.$set(_vm.article, "title", $event.target.value)
-            }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("textarea", {
-          directives: [
-            {
-              name: "model",
-              rawName: "v-model",
-              value: _vm.article.body,
-              expression: "article.body"
-            }
-          ],
-          staticClass: "form-control",
-          attrs: { placeholder: "Body" },
-          domProps: { value: _vm.article.body },
-          on: {
-            input: function($event) {
-              if ($event.target.composing) {
-                return
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Name" },
+            domProps: { value: _vm.manager.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.manager, "name", $event.target.value)
               }
-              _vm.$set(_vm.article, "body", $event.target.value)
             }
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        { staticClass: "btn btn-light btn-block", attrs: { type: "submit" } },
-        [_vm._v("Save")]
-      )
-    ]
-  )
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.manager.email,
+                expression: "manager.email"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "Email" },
+            domProps: { value: _vm.manager.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.manager, "email", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.manager.password,
+                expression: "manager.password"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "password", placeholder: "Password" },
+            domProps: { value: _vm.manager.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.manager, "password", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "form-group" }, [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.manager.position,
+                expression: "manager.position"
+              }
+            ],
+            staticClass: "form-control",
+            attrs: { type: "text", placeholder: "position" },
+            domProps: { value: _vm.manager.position },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.manager, "position", $event.target.value)
+              }
+            }
+          })
+        ]),
+        _vm._v(" "),
+        _c(
+          "button",
+          { staticClass: "btn btn-light btn-block", attrs: { type: "submit" } },
+          [_vm._v("Save")]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+      _c("ul", { staticClass: "pagination" }, [
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.prev_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.fetchManager(_vm.pagination.prev_page_url)
+                  }
+                }
+              },
+              [_vm._v("Previous")]
+            )
+          ]
+        ),
+        _vm._v(" "),
+        _c("li", { staticClass: "page-item disabled" }, [
+          _c(
+            "a",
+            { staticClass: "page-link text-dark", attrs: { href: "#" } },
+            [
+              _vm._v(
+                "Page " +
+                  _vm._s(_vm.pagination.current_page) +
+                  "\n                     of " +
+                  _vm._s(_vm.pagination.last_page) +
+                  "\n                 "
+              )
+            ]
+          )
+        ]),
+        _vm._v(" "),
+        _c(
+          "li",
+          {
+            staticClass: "page-item",
+            class: [{ disabled: !_vm.pagination.next_page_url }]
+          },
+          [
+            _c(
+              "a",
+              {
+                staticClass: "page-link",
+                attrs: { href: "#" },
+                on: {
+                  click: function($event) {
+                    _vm.fetchManager(_vm.pagination.next_page_url)
+                  }
+                }
+              },
+              [_vm._v("Next")]
+            )
+          ]
+        )
+      ])
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -47409,7 +47688,7 @@ if (false) {
 }
 
 /***/ }),
-/* 42 */
+/* 43 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

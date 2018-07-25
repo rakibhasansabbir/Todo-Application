@@ -16,10 +16,10 @@ class ManagerController extends Controller
     public function index()
     {
         // Get manager
-        $articles = Manager::orderBy('created_at', 'desc')->paginate(5);
+        $manager = Manager::orderBy('created_at', 'desc')->paginate(5);
 
-        // Return collection of articles as a resource
-        return ArticleResource::collection($articles);
+        // Return collection of manager as a resource
+        return ArticleResource::collection($manager);
     }
 
     /**

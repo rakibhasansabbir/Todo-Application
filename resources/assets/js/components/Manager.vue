@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>Managers</h2>
+        <h2>Add manager</h2>
         <form @submit.prevent="addManager" class="mb-3">
             <div class="form-group">
                 <input type="text" class="form-control" placeholder="Name"
