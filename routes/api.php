@@ -16,3 +16,18 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// List managers
+Route::get('managers', 'ManagerController@index');
+
+// List single managers
+Route::get('manager/{id}', 'ManagerController@show');
+
+// Create new managers
+Route::post('manager', 'ManagerController@store');
+
+// Update managers
+Route::put('manager', 'ManagerController@store');
+
+// Delete managers
+Route::delete('manager/{id}', 'ManagerController@destroy');

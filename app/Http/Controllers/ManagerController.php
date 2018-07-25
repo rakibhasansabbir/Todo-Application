@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Manager;
+use App\Http\Resources\Manager as ArticleResource;
 
 class ManagerController extends Controller
 {
@@ -13,7 +15,11 @@ class ManagerController extends Controller
      */
     public function index()
     {
-        //
+        // Get manager
+        $articles = Manager::orderBy('created_at', 'desc')->paginate(5);
+
+        // Return collection of articles as a resource
+        return ArticleResource::collection($articles);
     }
 
     /**
@@ -34,7 +40,16 @@ class ManagerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $manager = $request->isMethod('put') ? Manager::findOrFail($request->manager_id) : new Manager;
+
+        $manager->name = $request->input('name');
+        $manager->email = $request->input('email');
+        $manager->password = $request->input('password');
+        $manager->position = $request->input('position');
+
+        if($manager->save()) {
+            return new ManagerResource($manager);
+        }
     }
 
     /**
@@ -45,7 +60,11 @@ class ManagerController extends Controller
      */
     public function show($id)
     {
-        //
+        // Get manager
+       $manager = Manager::findOrFail($id);
+
+       // Return single manager as a resource
+       return new ManagerResource($manager);
     }
 
     /**
@@ -79,6 +98,11 @@ class ManagerController extends Controller
      */
     public function destroy($id)
     {
-        //
+         // Get manager
+         $manager = Manager::findOrFail($id);
+
+         if($manager->delete()) {
+             return new ManagerResource($manager);
+         }    
     }
 }
