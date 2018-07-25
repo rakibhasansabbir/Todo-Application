@@ -16,6 +16,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('manager', require('./components/Manager.vue'));
+Vue.component('todo', require('./components/Todo.vue'));
 
 const app = new Vue({
     el: '#app'

@@ -31,3 +31,19 @@ Route::put('manager', 'ManagerController@store');
 
 // Delete managers
 Route::delete('manager/{id}', 'ManagerController@destroy');
+
+
+// List todos
+Route::get('todos', 'TodoController@index');
+
+// List single todos
+Route::get('todo/{id}', 'TodoController@show');
+
+// Create new todos
+Route::post('todo', 'TodoController@store');
+
+// Update todos
+Route::put('todo', 'TodoController@store');
+
+// Delete todos
+Route::delete('todo/{id}', 'TodoController@destroy');

@@ -23,5 +23,6 @@ Route::prefix('manager')->group(function (){
     Route::get('/login', 'Auth\ManagerLoginController@showLoginForm')->name('manager.login');
     Route::post('/login', 'Auth\ManagerLoginController@login')->name('manager.login.submit');
     Route::get('/', 'ManagerHomeController@index')->name('manager.dashboard');
+    Route::get('/todos', 'ManagerHomeController@getAll');
 
 });
