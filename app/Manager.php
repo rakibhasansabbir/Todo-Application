@@ -9,6 +9,8 @@ class Manager extends Authenticatable
 {
     use Notifiable;
 
+    protected $guard = 'manager';
+
     /**
      * The attributes that are mass assignable.
      *

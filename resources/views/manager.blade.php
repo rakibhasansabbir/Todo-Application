@@ -5,7 +5,7 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">Admin Dashboard</div>
+                <div class="card-header">Manager Dashboard</div>
 
                 <div class="card-body">
                     @if (session('status'))
@@ -16,7 +16,7 @@
                     <div id="app">
                         
                         <div class="container">
-                            <manager></manager>
+                            <p>welcome manager</p>
                         </div>
                     </div>
                 </div>

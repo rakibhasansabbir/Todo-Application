@@ -5,10 +5,10 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('Admin Login') }}</div>
+                <div class="card-header">{{ __('Manager Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
+                    <form method="POST" action="{{ route('manager.login.submit') }}" aria-label="{{ __('Login') }}">
                         @csrf
 
                         <div class="form-group row">
